@@ -1,0 +1,13 @@
+[build]
+  base    = "project"
+  command = "npm run build"
+  publish = "project/dist"
+
+[dev]
+  command = "npm run dev"
+  targetPort = 3000
+  port = 8888
+  publish = "project/dist"
+
+[functions]
+  directory = "project/netlify/functions"
