@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <Layout title="Register">
+  <Header />
   <section class="py-20 bg-gray-50">
     <div class="max-w-md mx-auto px-4">
       <h1 class="text-3xl font-bold mb-6">Event Registration</h1>
@@ -28,6 +31,7 @@ import Layout from '../layouts/Layout.astro';
       </form>
     </div>
   </section>
+  <Footer />
 </Layout>
 
 <script>
