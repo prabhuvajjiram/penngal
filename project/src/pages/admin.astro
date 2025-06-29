@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Admin">
+  <section id="login-section" class="py-20 bg-gray-50">
+    <div class="max-w-md mx-auto px-4">
+      <h1 class="text-3xl font-bold mb-6">Admin Login</h1>
+      <form id="admin-form" class="space-y-4">
+        <div>
+          <label for="admin-user" class="block text-sm font-medium text-gray-700">Username</label>
+          <input id="admin-user" type="text" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" />
+        </div>
+        <div>
+          <label for="admin-pass" class="block text-sm font-medium text-gray-700">Password</label>
+          <input id="admin-pass" type="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" />
+        </div>
+        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">Login</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="registrations-section" class="py-20 bg-white hidden">
+    <div class="max-w-xl mx-auto px-4">
+      <h1 class="text-3xl font-bold mb-6">Registrations</h1>
+      <ul id="registrations" class="space-y-2"></ul>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const tokenKey = 'adminToken';
+
+document.getElementById('admin-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = document.getElementById('admin-user').value;
+  const password = document.getElementById('admin-pass').value;
+  const res = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+  if (res.ok) {
+    const data = await res.json();
+    localStorage.setItem(tokenKey, data.token);
+    loadRegistrations();
+  } else {
+    alert('Invalid credentials');
+  }
+});
+
+async function loadRegistrations() {
+  const token = localStorage.getItem(tokenKey);
+  if (!token) return;
+
+  const res = await fetch('/api/registrations', { headers: { 'Authorization': `Bearer ${token}` } });
+  if (res.ok) {
+    const xmlText = await res.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+    const list = document.getElementById('registrations');
+    list.innerHTML = '';
+    xmlDoc.querySelectorAll('registration').forEach((r) => {
+      const name = r.querySelector('name')?.textContent || '';
+      const email = r.querySelector('email')?.textContent || '';
+      const li = document.createElement('li');
+      li.textContent = `${name} - ${email}`;
+      list.appendChild(li);
+    });
+    document.getElementById('login-section').classList.add('hidden');
+    document.getElementById('registrations-section').classList.remove('hidden');
+  } else {
+    alert('Unauthorized');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadRegistrations);
+</script>
