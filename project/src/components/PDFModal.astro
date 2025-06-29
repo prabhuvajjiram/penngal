@@ -1,0 +1,126 @@
+---
+---
+
+<div id="pdf-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <h3 id="pdf-modal-title" class="text-xl font-bold text-gray-900">பூவிதழ் Magazine</h3>
+      <button id="close-pdf-modal" class="text-gray-400 hover:text-gray-600 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Modal Body -->
+    <div class="flex-1 overflow-hidden">
+      <iframe 
+        id="pdf-iframe" 
+        src="" 
+        class="w-full h-full border-0"
+        title="PDF Viewer"
+      ></iframe>
+    </div>
+    
+    <!-- Modal Footer -->
+    <div class="p-4 border-t bg-gray-50 flex justify-between items-center">
+      <div class="text-sm text-gray-600">
+        <span id="pdf-modal-description">Loading PDF...</span>
+      </div>
+      <div class="flex gap-2">
+        <a 
+          id="pdf-download-link" 
+          href="#" 
+          target="_blank" 
+          class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          Download PDF
+        </a>
+        <button 
+          id="close-pdf-modal-btn" 
+          class="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-semibold transition-colors"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('pdf-modal');
+    const iframe = document.getElementById('pdf-iframe');
+    const modalTitle = document.getElementById('pdf-modal-title');
+    const modalDescription = document.getElementById('pdf-modal-description');
+    const downloadLink = document.getElementById('pdf-download-link');
+    const closeButtons = document.querySelectorAll('#close-pdf-modal, #close-pdf-modal-btn');
+    
+    // Function to open PDF modal
+    window.openPDFModal = function(pdfUrl, title, description, downloadUrl) {
+      // Convert Google Drive view URL to embed URL
+      let embedUrl = pdfUrl;
+      if (pdfUrl.includes('drive.google.com')) {
+        const fileId = pdfUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+        if (fileId) {
+          embedUrl = `https://drive.google.com/file/d/${fileId[1]}/preview`;
+        }
+      }
+      
+      iframe.src = embedUrl;
+      modalTitle.textContent = title;
+      modalDescription.textContent = description;
+      downloadLink.href = downloadUrl || pdfUrl;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    };
+    
+    // Function to close PDF modal
+    function closePDFModal() {
+      modal.classList.add('hidden');
+      iframe.src = '';
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close modal event listeners
+    closeButtons.forEach(button => {
+      button.addEventListener('click', closePDFModal);
+    });
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closePDFModal();
+      }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closePDFModal();
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Ensure modal appears above everything */
+  #pdf-modal {
+    z-index: 9999;
+  }
+  
+  /* Smooth transitions */
+  #pdf-modal {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  /* Loading state for iframe */
+  #pdf-iframe {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="none" stroke="%23ec4899" stroke-width="4"><animate attributeName="stroke-dasharray" values="0 126;63 63;0 126" dur="1.5s" repeatCount="indefinite"/></circle></svg>') center center no-repeat;
+    background-size: 50px 50px;
+  }
+</style>

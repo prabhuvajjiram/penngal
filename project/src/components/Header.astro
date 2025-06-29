@@ -1,0 +1,63 @@
+---
+---
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center">
+        <a href="/" class="flex items-center space-x-2">
+          <img src="/images/logo.png" alt="Chicago PennGal Logo" class="w-12 h-12 rounded-full" />
+          <div class="flex flex-col">
+            <span class="font-bold text-xl text-gray-900">CHICAGO PENNGAL</span>
+            <span class="text-xs text-gray-600">சிகாகோ பெண்கள்</span>
+          </div>
+        </a>
+      </div>
+      
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-8">
+          <a href="#about" class="text-gray-700 hover:text-pink-600 px-3 py-2 text-sm font-medium transition-colors">About Us</a>
+          <a href="#gallery" class="text-gray-700 hover:text-pink-600 px-3 py-2 text-sm font-medium transition-colors">Gallery</a>
+          <a href="#magazines" class="text-gray-700 hover:text-pink-600 px-3 py-2 text-sm font-medium transition-colors">பூவிதழ் (Magazine)</a>
+          <a href="#sponsors" class="text-gray-700 hover:text-pink-600 px-3 py-2 text-sm font-medium transition-colors">Sponsors</a>
+          <a href="#contact" class="text-gray-700 hover:text-pink-600 px-3 py-2 text-sm font-medium transition-colors">Contact</a>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <a href="#contact" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+          Get Involved
+        </a>
+        <button class="md:hidden text-gray-700 hover:text-pink-600" id="mobile-menu-button">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+        <a href="#about" class="text-gray-700 hover:text-pink-600 block px-3 py-2 text-base font-medium">About Us</a>
+        <a href="#gallery" class="text-gray-700 hover:text-pink-600 block px-3 py-2 text-base font-medium">Gallery</a>
+        <a href="#magazines" class="text-gray-700 hover:text-pink-600 block px-3 py-2 text-base font-medium">பூவிதழ் (Magazine)</a>
+        <a href="#sponsors" class="text-gray-700 hover:text-pink-600 block px-3 py-2 text-base font-medium">Sponsors</a>
+        <a href="#contact" class="text-gray-700 hover:text-pink-600 block px-3 py-2 text-base font-medium">Contact</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>
