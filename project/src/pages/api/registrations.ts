@@ -3,7 +3,7 @@ import { TOKEN } from './login';
 
 export const prerender = false;
 
-const fileUrl = new URL('../../../../data/registrations.xml', import.meta.url);
+const fileUrl = new URL('../../../data/registrations.json', import.meta.url);
 
 export async function GET({ request }: { request: Request }) {
   const auth = request.headers.get('authorization');
@@ -11,9 +11,9 @@ export async function GET({ request }: { request: Request }) {
     return new Response('Unauthorized', { status: 401 });
   }
   try {
-    const xml = await fs.readFile(fileUrl, 'utf-8');
-    return new Response(xml, { headers: { 'Content-Type': 'application/xml' } });
+    const json = await fs.readFile(fileUrl, 'utf-8');
+    return new Response(json, { headers: { 'Content-Type': 'application/json' } });
   } catch {
-    return new Response('<registrations></registrations>', { headers: { 'Content-Type': 'application/xml' } });
+    return new Response('[]', { headers: { 'Content-Type': 'application/json' } });
   }
 }

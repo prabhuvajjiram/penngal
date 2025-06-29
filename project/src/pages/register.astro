@@ -15,6 +15,14 @@ import Layout from '../layouts/Layout.astro';
           <label for="reg-email" class="block text-sm font-medium text-gray-700">Email *</label>
           <input id="reg-email" type="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" />
         </div>
+        <div>
+          <label for="reg-address" class="block text-sm font-medium text-gray-700">Address</label>
+          <input id="reg-address" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500" />
+        </div>
+        <div>
+          <label for="reg-comments" class="block text-sm font-medium text-gray-700">Comments</label>
+          <textarea id="reg-comments" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"></textarea>
+        </div>
         <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">Register</button>
         <p id="register-message" class="text-green-600 hidden">Thank you for registering!</p>
       </form>
@@ -27,10 +35,12 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   e.preventDefault();
   const name = document.getElementById('reg-name').value;
   const email = document.getElementById('reg-email').value;
+  const address = document.getElementById('reg-address').value;
+  const comments = document.getElementById('reg-comments').value;
   const res = await fetch('/api/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email })
+    body: JSON.stringify({ name, email, address, comments })
   });
   if (res.ok) {
     document.getElementById('register-message').classList.remove('hidden');
